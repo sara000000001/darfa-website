@@ -79,7 +79,9 @@ h1,h2,h3,.display{font-family:"Rubik","IBM Plex Sans Arabic",Tahoma,sans-serif; 
   font-size:9.5px; letter-spacing:.22em; color:var(--olive-mid);
   text-transform:uppercase; margin-top:-4px;
 }
-.bar .tel{margin-inline-start:auto; font-size:14px; color:var(--muted); text-decoration:none}
+.bar-end{margin-inline-start:auto; display:flex; align-items:center; gap:13px}
+.ar-name{font-family:"Rubik",Tahoma,sans-serif; font-weight:800; font-size:20px; color:var(--olive); letter-spacing:-.01em}
+.bar .tel{font-size:14px; color:var(--muted); text-decoration:none}
 .bar .tel:hover{color:var(--olive)}
 
 /* ---------- الهيرو ---------- */
@@ -177,6 +179,11 @@ h1,h2,h3,.display{font-family:"Rubik","IBM Plex Sans Arabic",Tahoma,sans-serif; 
   margin-bottom:11px; overflow:hidden; transition:border-color .16s;
 }
 .up[data-on="true"]{border-color:var(--olive)}
+.up[data-blocked="true"]{opacity:.55}
+.up[data-blocked="true"] .up-btn{cursor:not-allowed}
+.up[data-shake="1"]{animation:shake .35s}
+@keyframes shake{25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+.up-full{padding:9px 16px; background:#FDF6E9; color:var(--warn); font-size:12.5px; border-top:1px solid #EBD9B8}
 .up-btn{
   width:100%; background:none; border:0; font:inherit; color:inherit; cursor:pointer;
   padding:16px 18px; display:flex; align-items:center; gap:15px; text-align:start;
@@ -205,9 +212,15 @@ h1,h2,h3,.display{font-family:"Rubik","IBM Plex Sans Arabic",Tahoma,sans-serif; 
   max-height:0; overflow:hidden; transition:max-height .3s ease;
   border-top:1px solid transparent;
 }
-.up[data-on="true"] .up-body{max-height:150px; border-top-color:var(--rule)}
+.up[data-on="true"] .up-body{max-height:240px; border-top-color:var(--rule)}
 .up-body-in{padding:14px 18px; display:flex; align-items:center; gap:15px; flex-wrap:wrap}
 .up-body-in p{font-size:13.5px; color:var(--muted); flex:1; min-width:190px}
+.pick{display:flex; align-items:center; gap:7px; font-size:13px; color:var(--muted)}
+.pick select{
+  font:inherit; font-size:13.5px; padding:7px 9px; border:1.5px solid var(--rule);
+  border-radius:9px; background:#fff; color:var(--ink);
+}
+.pick select:focus-visible{outline:2.5px solid var(--wood); outline-offset:1px}
 .qty{display:flex; align-items:center; gap:5px; background:var(--olive-pale); border-radius:10px; padding:4px}
 .qty button{
   width:31px; height:31px; border:0; border-radius:7px; background:#fff; cursor:pointer;
@@ -264,18 +277,38 @@ h1,h2,h3,.display{font-family:"Rubik","IBM Plex Sans Arabic",Tahoma,sans-serif; 
   .panel{position:static}
   .mobile-bar{
     position:fixed; inset-inline:0; bottom:0; z-index:70; background:#fff;
-    border-top:1.5px solid var(--olive); padding:12px 18px calc(12px + env(safe-area-inset-bottom));
-    display:flex; align-items:center; gap:14px;
+    border-top:2px solid var(--olive); padding:11px 16px calc(11px + env(safe-area-inset-bottom));
+    display:flex; align-items:center; gap:12px; box-shadow:0 -3px 14px rgba(0,0,0,.09);
   }
-  .mobile-bar .v{font-family:"IBM Plex Mono",monospace; font-size:21px; font-weight:600; color:var(--olive)}
-  .mobile-bar .l{font-size:11.5px; color:var(--muted)}
+  .mb-fig{
+    flex:none; width:96px; padding:6px 7px; background:var(--olive-pale);
+    border-radius:10px; display:flex; align-items:center;
+  }
+  .mb-fig svg{width:100%; height:auto; display:block}
+  .mb-txt{flex:1; min-width:0; display:flex; flex-direction:column; gap:2px}
+  .mb-price{font-size:13px; color:var(--muted); white-space:nowrap}
+  .mb-price b{font-family:"IBM Plex Mono",monospace; font-size:17px; font-weight:600; color:var(--olive)}
+  .mb-sub{font-size:11.5px; color:var(--muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+  .mb-sub b{color:var(--ink); font-weight:600; font-family:"IBM Plex Mono",monospace}
   .mobile-bar a{
-    margin-inline-start:auto; background:var(--olive); color:#fff; text-decoration:none;
-    padding:12px 20px; border-radius:11px; font-weight:600; font-size:15px;
+    background:var(--olive); color:#fff; text-decoration:none; flex:none;
+    width:96px; padding:14px 0; border-radius:11px; font-weight:600; font-size:15px; text-align:center;
   }
 }
 @media(min-width:901px){ .mobile-bar{display:none} }
 
+.seo{border-top:1px solid var(--rule); background:#F7F6F0}
+.seo-in{max-width:900px; margin:0 auto; padding:46px 22px}
+.seo h2{font-size:22px; margin-bottom:14px}
+.seo h3{font-size:17px; margin:28px 0 10px; color:var(--olive)}
+.seo p{font-size:15px; color:var(--muted); margin-bottom:12px}
+.seo ul{list-style:none; display:grid; gap:9px}
+.seo li{font-size:14.5px; color:var(--muted); padding-inline-start:16px; position:relative}
+.seo li::before{content:"—"; position:absolute; inset-inline-start:0; color:var(--olive-mid)}
+.seo strong{color:var(--ink); font-weight:600}
+/* مقروء لمحركات البحث، مش ظاهر للعميل */
+.crawl{position:absolute; width:1px; height:1px; margin:-1px; padding:0; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; border:0}
+.seo-in{padding:36px 22px}
 footer{border-top:1px solid var(--rule); padding:30px 22px; text-align:center; color:var(--muted); font-size:13.5px}
 
 @media (prefers-reduced-motion:reduce){
@@ -295,9 +328,9 @@ footer{border-top:1px solid var(--rule); padding:30px 22px; text-align:center; c
         <rect x="16" y="7" width="7" height="7.2" rx="1.6" fill="#FBFAF6" opacity=".62"/>
         <rect x="16" y="15.8" width="7" height="7.2" rx="1.6" fill="#FBFAF6" opacity=".62"/>
       </svg>
-      <span class="wordmark">darfa<span>درفة</span><small>Cabinets</small></span>
+      <span class="wordmark">darfa<small>Cabinets</small></span>
     </a>
-    <a class="tel" href="tel:01033717234">01033717234</a>
+    <span class="bar-end"><b class="ar-name">درفة للمطابخ</b><a class="tel" href="tel:01033717234">01033717234</a></span>
   </div>
 </div>
 
@@ -380,8 +413,8 @@ footer{border-top:1px solid var(--rule); padding:30px 22px; text-align:center; c
     </div>
 
     <div class="elev">
-      <svg id="elev" viewBox="0 0 320 96" role="img" aria-label="منظر أمامي لوحدات المطبخ"></svg>
-      <div class="elev-cap"><span>واجهة الوحدات السفلية</span><span id="elevNote">درف</span></div>
+      <svg id="elev" viewBox="0 0 320 110" role="img" aria-label="منظر أمامي لوحدات المطبخ"></svg>
+      <div class="elev-cap"><span>واجهة المطبخ — المقاسات بالسنتيمتر</span><span id="elevNote">درف</span></div>
     </div>
 
     <div class="gauges">
@@ -411,7 +444,7 @@ footer{border-top:1px solid var(--rule); padding:30px 22px; text-align:center; c
 
     <div class="draft">
       <span aria-hidden="true">✳︎</span>
-      <span>النطاق بيتحدد بعدد الوحدات وتعقيد التصميم، مش بالخامة. الرقم النهائي بيتحدد بعد المعاينة — وهي بـ ٤٠٠ ج بتتخصم من التعاقد.</span>
+      <span>السعر بيتحدد بعدد الوحدات وتعقيد التصميم، مش بالخامة. الرقم النهائي بيتحدد بعد المعاينة — وهي بـ ٤٠٠ ج بتتخصم من التعاقد.</span>
     </div>
 
     <a class="cta" id="wa" href="#" target="_blank" rel="noopener">ابعتي البيان على واتساب</a>
@@ -420,12 +453,60 @@ footer{border-top:1px solid var(--rule); padding:30px 22px; text-align:center; c
 </main>
 
 <div class="mobile-bar">
-  <div>
-    <div class="v num" id="mTotal">٠</div>
-    <div class="l" id="mSub">١٢.٠ متر · ٢ درج</div>
+  <div class="mb-fig"><svg id="elevM" viewBox="0 0 320 96" aria-hidden="true"></svg></div>
+  <div class="mb-txt">
+    <span class="mb-price">بيبدأ من <b class="num" id="mTotal">٠</b> ج</span>
+    <span class="mb-sub"><b class="num" id="mMetres">١٢.٠</b> متر · <b class="num" id="mUtil">٥٥٪</b> مستغلة</span>
   </div>
-  <a href="#" id="mWa" target="_blank" rel="noopener">ابعتي على واتساب</a>
+  <a href="#" id="mWa" target="_blank" rel="noopener">واتساب</a>
 </div>
+
+<!-- ====== قسم نصي لمحركات البحث ====== -->
+<section class="seo">
+  <div class="seo-in">
+    <h2>حلول التخزين في مطابخ درفة — الإسكندرية</h2>
+    <p>درفة كابنتس بتصنع مطابخ ألوميتال وخشب HPL وأكريليك في سموحة بالإسكندرية، بسعر معلن بالمتر الطولي وحلول تخزين ذكية بتزوّد المساحة المستغلة في المطبخ.</p>
+
+    <div class="crawl">
+      <h3>المستوى الأساسي — إصلاح الأماكن الميتة</h3>
+      <ul>
+        <li><strong>وحدة ثلاثية بـ ٣ أدراج</strong> — بتستبدل الدرفة العادية بتلات أدراج للتوابل والمعالق وأدوات التقديم.</li>
+        <li><strong>تقسيمات أدراج داخلية</strong> — تقسيمة معالق، تقسيمة توابل، أو على حسب الطلب جوه أي درج قائم.</li>
+        <li><strong>تيربو الخضار</strong> — تلات سلال سلك متهوّية بعرض ٤٠ أو ٥٠ أو ٦٠ سم، بتخلي البصل والبطاطس والخضار تعيش أكتر بدل الأكياس.</li>
+        <li><strong>جرار الزيوت</strong> — وحدة سحب ضيقة ٢٠ أو ٣٠ أو ٤٠ سم جنب البوتاجاز للزيوت والصلصات.</li>
+        <li><strong>درج القمامة</strong> — بيستفيد من مساحة تحت الحوض بسلتين ١٢ و ٨ لتر مع فرز البلاستيك والكرتون.</li>
+        <li><strong>زاوية كورنر حرف L سفلية</strong> — بتستبدل الزاوية العمياء وبترجّع ضعف حجم الزاوية.</li>
+        <li><strong>درجين عميقين</strong> — بعرض ٦٠ أو ٩٠ سم للحلل والطاسات تحت البوتاجاز.</li>
+        <li><strong>إضاءة داخلية للوحدات</strong> — بتشتغل مع فتح الدرفة أو الدرج.</li>
+      </ul>
+
+      <h3>المستوى العائلي — لبيت أربعة أفراد وأكتر</h3>
+      <ul>
+        <li><strong>تاور زاوية التخزين</strong> — بيستبدل زاوية الكورنر السفلية ويدي زيادة أكتر من ضعف مساحة التخزين، ويجمع الأجهزة ومكان تخزين الطعام الجاف زي المكرونة والرز والبقوليات.</li>
+        <li><strong>كوفي كورنر</strong> — ركن للقهوة والشاي بمكان للماكينة ورف للأكواب ودرج للكبسولات.</li>
+        <li><strong>النيش</strong> — وحدة عرض للأطقم، تخزين وشكل في نفس المساحة.</li>
+        <li><strong>طرابيزة العيلة المتحركة</strong> — بتتسحب من جوه الوحدة وقت الأكل وترجع بعده.</li>
+        <li><strong>درج القمامة العائلي</strong> — بيستبدل وحدة الحوض العادية بدرج قمامة ومساحة تخزين للمنظفات.</li>
+        <li><strong>تقسيمة صواني داخلية</strong> — بتقسّم درفة عادية بعرض ٦٠ أو ٩٠ سم بمقسّمات رأسية للصواني وألواح التقطيع.</li>
+      </ul>
+
+      <h3>المستوى البريميوم — لمحترفي الطبخ</h3>
+      <ul>
+        <li><strong>استغلال وشوش الدرف بمساحات تخزين</strong> — أرفف لرولات الفويل والمناديل والاسترتش مكان منشفة الفوط، بترفع فعالية استغلال المساحة ٣٠٪.</li>
+        <li><strong>جرار الصواني</strong> — بيستبدل درفة عادية بعرض ٥٠ أو ٦٠ سم، صواني الفرن واقفة رأسي.</li>
+        <li><strong>درجين عميقين بريميوم</strong> — بيستبدل الأدراج العميقة العادية وجواه درج سحري إضافي بيزود المساحة ٢٠٪.</li>
+        <li><strong>جرار الطاسات</strong> — بيستبدل درفة عادية ٦٠ سم، كل طاسة وغطا في حيزه.</li>
+        <li><strong>وحدة تحت الحوض بريميوم</strong> — سطح تقطيع فوق درج القمامة ومكان مخصص لأدوات التنظيف.</li>
+        <li><strong>جرار المعالق والمغارف</strong> — بعرض ٣٠ أو ٤٠ أو ٥٠ سم، صفايات استانلس للاستخدام اليومي.</li>
+        <li><strong>دولاب أدوات التنظيف</strong> — عمود بعرض ٢٠ أو ٣٠ أو ٤٠ سم للمقشة والممسحة والمكنسة والمساحيق.</li>
+      </ul>
+
+      <h3>الخامات وسعر المتر الطولي</h3>
+      <p>سعر المتر الطولي بيشمل هيكل الوحدات والدرف العادية والزاوية العمياء والمفصلات والمقابض والمجاري والنقل والتركيب. الخامات المتاحة: ألوميتال وخشب HPL وأكريليك. في مصر المتر الطولي بيتحسب سفلي لوحده وعلوي لوحده، والدور الإضافي لحد السقف بيتحسب برضه.</p>
+      <p>المعاينة بالليزر في الإسكندرية بأربعمية جنيه بتتخصم بالكامل من التعاقد، وبنطلّع تقرير بمقاسات مطبخك وسعة التخزين المتوقعة. أي ترقية بتتضاف بعد التركيب بتكون أغلى ٢٠ لـ ٢٥٪ من نفس الترقية وقت التعاقد.</p>
+    </div>
+  </div>
+</section>
 
 <footer>درفة · سموحة، الإسكندرية · 01033717234 · مواعيد العمل ٩ ص – ٥ م</footer>
 
@@ -437,7 +518,7 @@ const WA = "201033717234";
 const PRICES_UPDATED = "أغسطس ٢٠٢٦";
 const MATERIALS = [
   {id:"alu", name:"ألوميتال", min:4400, max:5200, note:"الأوفر"},
-  {id:"hpl", name:"HPL",      min:5200, max:6000, note:"الأكثر طلبًا"},
+  {id:"hpl", name:"خشب HPL", min:5200, max:6000, note:"الأكثر طلبًا"},
   {id:"acr", name:"أكريليك",  min:5800, max:6600, note:"لمعة أعلى"}
 ];
 const TIERS = [
@@ -447,87 +528,115 @@ const TIERS = [
 ];
 
 const UPGRADES = [
-  /* ============ أساسي ============ */
-  {id:"spice3", tier:"basic", name:"٣ أدراج للتوابل والمعالق", replaces:"بتستبدل درفة عادية ٦٠ سم",
+  /* ================= أساسي ================= */
+  {id:"trio", short:"ثلاثية", tier:"basic", name:"وحدة ثلاثية بـ ٣ أدراج", replaces:"بيستبدل الدرفة",
    price:2900, kind:"diff", qty:true, w:60, t:"drawers", rows:3,
-   space:"تقسيم رأسي — أكتر ٣٥٪", util:4,
-   body:"كل درج بمقسّم جواه: توابل فوق، معالق وأدوات في النص، أدوات تقديم تحت. كل حاجة بانت من فوق من غير ما تدوري."},
-  {id:"veg", tier:"basic", name:"تيربو الخضار", replaces:"بتستبدل درفة عادية ٦٠ سم",
-   price:3300, kind:"diff", qty:true, w:60, t:"baskets", rows:3,
+   space:"بينظم ويسهّل استخدام المساحة", util:4,
+   body:"تلات أدراج بدل درفة واحدة: توابل ومعالق فوق، أدوات في النص، أدوات تقديم تحت. كل حاجة بانت من فوق."},
+  {id:"dividers", tier:"basic", name:"تقسيمات أدراج داخلية", replaces:"جوه درج موجود",
+   price:450, kind:"add", qty:true, w:0, t:"inside",
+   space:"بتنظّم المساحة، مش بتزوّدها", util:1,
+   opts:{label:"نوع التقسيمة", list:["تقسيمة معالق","تقسيمة توابل","أخرى"]},
+   body:"مقسّم جوه الدرج على حسب اللي بيتحط فيه — كل حاجة في حيزها."},
+  {id:"veg", short:"خضار", tier:"basic", name:"تيربو الخضار", replaces:"بيستبدل الدرفة",
+   price:3000, kind:"diff", qty:true, w:60, t:"baskets", rows:3,
+   widths:[40,50,60],
    space:"٣ سلال متهوّية — بدل الأكياس", util:4,
    body:"سلال سلك بتتهوّى، فالبصل والبطاطس والخضار بيعيشوا أكتر بدل ما يعطنوا في الأكياس."},
-  {id:"oil", tier:"basic", name:"جرار الزيوت", replaces:"إضافة جنب البوتاجاز",
-   price:4600, kind:"add", qty:false, w:30, t:"pullout",
-   space:"مساحة جديدة بالكامل", util:5,
-   body:"الزيوت والصلصات على بعد لفة واحدة وانتي واقفة على النار — وبره سطح العمل."},
-  {id:"bin", tier:"basic", name:"درج القمامة", replaces:"بتستبدل السلة المعلقة",
-   price:2400, kind:"diff", qty:false, w:60, t:"bin",
+  {id:"oil", short:"زيوت", tier:"basic", name:"جرار الزيوت", replaces:"بيستبدل جزء من الدرفة",
+   price:3200, kind:"diff", qty:false, w:30, t:"pullout",
+   widths:[20,30,40],
+   space:"ينظّم ويحافظ على الزيوت", util:5,
+   body:"الزيوت والصلصات على بعد لفة واحدة وانتي واقفة على النار — وبره سطح العمل بعيد عن الحرارة."},
+  {id:"bin", short:"قمامة", tier:"basic", name:"درج القمامة", replaces:"بيستفيد من مساحة تحت الحوض",
+   price:2400, kind:"diff", qty:false, w:90, t:"binBasic", group:"sink",
    space:"٢٠ لتر في سلتين مع فرز", util:4,
    body:"سلتين ١٢ و ٨ لتر بغطا مرفوع عن القاع — مفيش ريحة، وفرز البلاستيك والكرتون من الأول."},
-  {id:"corner", tier:"basic", name:"زاوية كورنر حرف L", replaces:"بتستبدل الزاوية العمياء",
-   price:3400, kind:"diff", qty:false, w:90, t:"corner",
+  {id:"corner", short:"زاوية", tier:"basic", name:"زاوية كورنر حرف L سفلية", replaces:"بيستبدل الزاوية العمياء",
+   price:3400, kind:"diff", qty:false, w:90, t:"corner", group:"corner",
    space:"بترجّع ضعف حجم الزاوية", util:7,
-   body:"الوحدة على شكل حرف L فبتفتح على الزاويتين مع بعض — مفيش جزء مخفي ورا درفة."},
-  {id:"deep", tier:"basic", name:"درج عميق", replaces:"بتستبدل درفة عادية ٩٠ سم",
-   price:3200, kind:"diff", qty:true, w:90, t:"drawers", rows:2,
+   body:"الوحدة على شكل حرف L فبتفتح على الزاويتين مع بعض — مفيش جزء بعيد عنك."},
+  {id:"deep", short:"عميق", tier:"basic", name:"درجين عميقين", replaces:"بيستبدل عرض الدرفة العادية",
+   price:3200, kind:"diff", qty:true, w:90, t:"drawers", rows:2, group:"deep",
+   widths:[60,90],
    space:"وصول لآخر الوحدة — أكتر ٣٠٪", util:4,
    body:"للحلل والطاسات تحت البوتاجاز — بتتنقل للنار بحركة واحدة من غير انحناء."},
+  {id:"light_b", tier:"basic", name:"إضاءة داخلية للوحدات", replaces:"إضافة",
+   price:900, kind:"add", qty:false, w:0, t:"inside", group:"light",
+   space:"بتوريكي آخر نقطة في الوحدة", util:1,
+   body:"مشكلة أي وحدة عميقة إنها ضلمة، فالحاجة بتتحط فيها وتتنسى. الإضاءة بتشتغل مع فتح الدرفة أو الدرج."},
 
-  /* ============ عائلي ============ */
-  {id:"tower", tier:"family", name:"تاور زاوية التخزين", replaces:"إضافة — بيستغل ارتفاع السقف",
-   price:14450, kind:"add", qty:false, w:60, t:"tower",
+  /* ================= عائلي ================= */
+  {id:"tower", short:"تاور", tier:"family", name:"تاور زاوية التخزين",
+   replaces:"بيستبدل درفة عادية — زيادة أكتر من ضعف مساحة التخزين",
+   price:5300, kind:"diff", qty:true, w:90, t:"tower",
    space:"بيستغل ارتفاع السقف كله", util:8,
-   body:"برج لحد السقف في الزاوية — الرفوف السفلية للاستخدام اليومي، والعليا للمواسم والحاجات نادرة الاستخدام."},
-  {id:"coffee", tier:"family", name:"كوفي كورنر", replaces:"إضافة",
-   price:6900, kind:"add", qty:false, w:60, t:"niche",
+   body:"يجمع الأجهزة ومكان تخزين الطعام الجاف زي المكرونة والرز والبقوليات. ولو المطبخ فيه زاويتين، تقدري تعملي واحدة حرف L سفلية والتانية تاور."},
+  {id:"coffee", short:"كوفي", tier:"family", name:"كوفي كورنر", replaces:"إضافة",
+   price:4200, kind:"add", qty:false, w:60, t:"coffee",
    space:"ركن مستقل — بيفضّي سطح العمل", util:4,
-   body:"ركن للقهوة والشاي: مكان للماكينة، ورف للأكواب، ودرج للكبسولات والسكر. بيشيل الزحمة من على سطح العمل."},
-  {id:"niche", tier:"family", name:"النيش",  replaces:"إضافة",
-   price:5900, kind:"add", qty:false, w:60, t:"niche",
+   body:"مكان للماكينة، ورف للأكواب، ودرج للكبسولات والسكر. بيشيل الزحمة من على سطح العمل."},
+  {id:"niche", short:"نيش", tier:"family", name:"النيش", replaces:"إضافة",
+   price:6200, kind:"add", qty:false, w:60, t:"niche",
    space:"عرض وتخزين في نفس المساحة", util:3,
-   body:"وحدة عرض بزجاج أو مفتوحة للأطقم والحاجات الحلوة — تخزين وشكل في نفس الوقت."},
-  {id:"table", tier:"family", name:"طرابيزة العيلة المتحركة", replaces:"إضافة",
-   price:7900, kind:"add", qty:false, w:60, t:"table",
+   body:"وحدة عرض للأطقم والحاجات الحلوة — تخزين وشكل في نفس الوقت."},
+  {id:"table", short:"طرابيزة", tier:"family", name:"طرابيزة العيلة المتحركة", replaces:"إضافة",
+   price:4600, kind:"add", qty:false, w:120, t:"table",
    space:"طرابيزة بتختفي وقت ما تخلصي", util:5,
-   body:"بتتسحب من جوه الوحدة وقت الأكل، وترجع مكانها بعده — مساحة أكل من غير ما تاخد من أرضية المطبخ."},
-  {id:"sink", tier:"family", name:"وحدة تحت الحوض + أدوات التنظيف", replaces:"بتستبدل وحدة الحوض العادية",
-   price:2900, kind:"diff", qty:false, w:90, t:"sink",
+   body:"بتتسحب من جوه الوحدة وقت الأكل وترجع مكانها بعده — مساحة أكل من غير ما تاخد من أرضية المطبخ."},
+  {id:"binFam", short:"قمامة", tier:"family", name:"درج القمامة العائلي",
+   replaces:"بيستبدل وحدة الحوض العادية — درج قمامة + مساحة تخزين المنظفات",
+   price:3600, kind:"diff", qty:false, w:90, t:"binFam", group:"sink",
    space:"من ٣٠٪ لـ ٦٥٪ تحت الحوض", util:5,
-   body:"سحّابة U بتلف حوالين ماسورة الصرف بدل ما تقف عندها، وقاعدة مقاومة للرطوبة، ومكان مخصص للمساحيق والإسفنج."},
-  {id:"trays", tier:"family", name:"تقسيمة رف الصواني", replaces:"إضافة جوه وحدة موجودة",
-   price:1200, kind:"add", qty:true, w:0, t:"inside",
-   space:"بتنظّم المساحة، مش بتزوّدها", util:1,
+   body:"سحّابة U بتلف حوالين ماسورة الصرف، وقاعدة مقاومة للرطوبة، ومكان مخصص للمساحيق والإسفنج."},
+  {id:"trays", short:"صواني", tier:"family", name:"تقسيمة صواني داخلية", replaces:"بيقسّم درفة عادية",
+   price:1200, kind:"diff", qty:true, w:60, t:"trayDiv",
+   widths:[60,90],
+   space:"بينظّم المساحة مش بيزوّدها", util:2,
    body:"مقسّمات رأسية للصواني وألواح التقطيع — كل واحدة واقفة لوحدها بدل ما تكون مكوّمة."},
+  {id:"light_f", tier:"family", name:"إضاءة داخلية للوحدات", replaces:"إضافة",
+   price:900, kind:"add", qty:false, w:0, t:"inside", group:"light",
+   space:"بتوريكي آخر نقطة في الوحدة", util:1,
+   body:"الإضاءة بتشتغل مع فتح الدرفة أو الدرج — الوحدة العميقة مبقتش ضلمة."},
 
-  /* ============ بريميوم ============ */
-  {id:"rolls", tier:"premium", name:"رولات الفويل والمناديل والاسترتش", replaces:"إضافة",
-   price:2600, kind:"add", qty:false, w:15, t:"spice",
-   space:"شريحة كانت هتضيع كفيلر", util:3,
-   body:"وحدة ضيقة ١٥ سم بحوامل للرولات — بتقطعي منها وهي مكانها من غير ما تطلّعيها."},
-  {id:"trayPull", tier:"premium", name:"جرار الصواني", replaces:"إضافة",
-   price:4200, kind:"add", qty:false, w:30, t:"pullout",
-   space:"تخزين رأسي جنب الفرن", util:4,
-   body:"صواني الفرن والشبكات واقفة رأسي جنب الفرن — تسحبي اللي عايزاه من غير ما تحركي الباقي."},
-  {id:"pans", tier:"premium", name:"جرار الطاسات", replaces:"إضافة",
-   price:4800, kind:"add", qty:false, w:45, t:"pullout",
+  /* ================= بريميوم ================= */
+  {id:"faces", tier:"premium", name:"استغلال وشوش الدرف بمساحات تخزين", replaces:"إضافة",
+   price:2600, kind:"add", qty:true, w:0, t:"inside",
+   space:"فعالية أعلى ٣٠٪ من الدرفة العادية", util:3,
+   body:"أرفف لرولات الفويل والمناديل مكان منشفة الفوط على وش الدرفة — مساحة كانت صفر."},
+  {id:"trayPull", short:"صواني", tier:"premium", name:"جرار الصواني", replaces:"بيستبدل درفة عادية",
+   price:3000, kind:"diff", qty:false, w:60, t:"trayDiv",
+   widths:[50,60],
+   space:"سرعة وفعالية تنظيم أكبر", util:4,
+   body:"صواني الفرن والشبكات واقفة رأسي — تسحبي اللي عايزاه من غير ما تحركي الباقي."},
+  {id:"deepPro", short:"عميق+", tier:"premium", name:"درجين عميقين بريميوم", replaces:"بيستبدل الأدراج العميقة العادية",
+   price:4200, kind:"diff", qty:true, w:90, t:"drawersPro", rows:2, group:"deep",
+   widths:[60,90],
+   space:"درج سحري داخلي — مساحة أكتر ٢٠٪", util:6,
+   body:"درجين عميقين وجواهم درج سحري إضافي مخفي — نفس العرض ومساحة أكتر."},
+  {id:"pans", short:"طاسات", tier:"premium", name:"جرار الطاسات", replaces:"بيستبدل درفة عادية — ٦٠ سم فقط",
+   price:3000, kind:"diff", qty:false, w:60, t:"pullout",
    space:"كل طاسة في مكانها", util:4,
    body:"الطاسات والأغطية كل واحدة في حيزها — مفيش رص فوق بعض ولا خبط."},
-  {id:"spoons", tier:"premium", name:"جرار المعالق", replaces:"إضافة",
-   price:2400, kind:"add", qty:false, w:15, t:"spice",
-   space:"أدوات الطبخ في إيدك", util:3,
-   body:"وحدة ضيقة لأدوات الطبخ الطويلة — بره سطح العمل وبعيد عن الدهن."},
-  {id:"cleaning", tier:"premium", name:"دولاب أدوات التنظيف", replaces:"إضافة",
-   price:8900, kind:"add", qty:false, w:45, t:"tower",
+  {id:"sinkPro", short:"حوض", tier:"premium", name:"وحدة تحت الحوض بريميوم",
+   replaces:"بيستبدل وحدة الحوض العادية",
+   price:4800, kind:"diff", qty:false, w:90, t:"binBasic", group:"sink",
+   space:"تقطيع وفرز في حركة واحدة", util:6,
+   body:"سطح تقطيع فوق درج القمامة مباشرة، ومكان مخصص لأدوات التنظيف. تقشّري وترمي من غير ما تلفي."},
+  {id:"tools", short:"معالق", tier:"premium", name:"جرار المعالق والمغارف", replaces:"بيستبدل جزء من درفة",
+   price:3000, kind:"diff", qty:false, w:40, t:"pullout",
+   widths:[30,40,50],
+   space:"أدوات المطبخ في إيدك", util:4,
+   body:"صفايات استانلس تحفظ المعالق والمغارف والسكاكين للاستخدام اليومي."},
+  {id:"cleaning", short:"تنظيف", tier:"premium", name:"دولاب أدوات التنظيف", replaces:"إضافة",
+   price:4400, kind:"add", qty:false, w:30, t:"tower",
+   widths:[20,30,40],
    space:"المقشة والشفاط جوه المطبخ", util:6,
    body:"عمود بارتفاع كامل للمقشة والممسحة والمكنسة والمساحيق — بدل ما يكونوا ورا الباب."},
-  {id:"towels", tier:"premium", name:"درج منظم الفوط", replaces:"إضافة جوه وحدة موجودة",
-   price:1400, kind:"add", qty:true, w:0, t:"inside",
-   space:"بتنظّم المساحة، مش بتزوّدها", util:1,
-   body:"مقسّم للفوط والمفارش — مطوية ومرتبة بدل ما تكون مكوّمة في درج."},
-  {id:"binTop", tier:"premium", name:"درج قمامة فوقية رف تقطيع", replaces:"إضافة",
-   price:5400, kind:"add", qty:false, w:60, t:"bin",
-   space:"تقطيع وفرز في حركة واحدة", util:5,
-   body:"لوح تقطيع فوق سلة القمامة مباشرة — تقشّري وترمي في نفس الحركة من غير ما تلفي."}
+  {id:"light_p", tier:"premium", name:"إضاءة داخلية للوحدات", replaces:"إضافة",
+   price:900, kind:"add", qty:false, w:0, t:"inside", group:"light",
+   space:"بتوريكي آخر نقطة في الوحدة", util:1,
+   body:"الإضاءة بتشتغل مع فتح الدرفة أو الدرج — الوحدة العميقة مبقتش ضلمة."}
 ];
 const BASE_UTIL = 55, MAX_UTIL = 92;
 
@@ -611,7 +720,7 @@ const ART = {
 };
 
 /* ===== الحالة ===== */
-const S = {lower:6, upper:1, extra:0, material:"hpl", tier:"basic", ups:{}};
+const S = {lower:6, upper:1, extra:0, material:"hpl", tier:"basic", ups:{}, w:{}, opt:{}};
 const ar = n => Math.round(n).toLocaleString("ar-EG");
 const arN = n => n.toLocaleString("ar-EG",{minimumFractionDigits:1,maximumFractionDigits:1});
 
@@ -651,7 +760,7 @@ function buildChips(){
 function buildTabs(){
   const host=document.getElementById("tabs"); host.innerHTML="";
   TIERS.forEach(t=>{
-    const n = UPGRADES.filter(u=>u.tier===t.id && S.ups[u.id]).length;
+    const n = UPGRADES.filter(u=>u.tier===t.id && S.ups[u.id] && !(u.group==="light" && u.id!=="light_b")).length;
     const b=document.createElement("button");
     b.type="button"; b.className="tab"; b.setAttribute("role","tab");
     b.setAttribute("aria-selected", String(S.tier===t.id));
@@ -664,10 +773,14 @@ function buildTabs(){
 function buildUps(){
   const host = document.getElementById("ups");
   host.innerHTML = "";
+  const built0 = buildUnits();
+  const free = built0.free;
   UPGRADES.filter(u=>u.tier===S.tier).forEach(u=>{
     const on = (S.ups[u.id]||0) > 0;
+    const need = S.w[u.id] || u.w || 0;
+    const blocked = !on && need > 0 && !u.group && need > free;
     const el = document.createElement("div");
-    el.className = "up"; el.dataset.on = String(on);
+    el.className = "up"; el.dataset.on = String(on); el.dataset.blocked = String(blocked);
     el.innerHTML = `
       <button class="up-btn" type="button" aria-pressed="${on}">
         <span class="tick" aria-hidden="true">
@@ -679,8 +792,15 @@ function buildUps(){
           <small>${u.kind==="diff"?"فرق الترقية":"سعر كامل"}</small>
         </span>
       </button>
+      ${blocked?`<div class="up-full">مفيش مساحة كفاية — فاضل ${free} سم بس. شيلي ترقية أو زوّدي طول المطبخ.</div>`:""}
       <div class="up-body"><div class="up-body-in">
         <p>${u.body}</p>
+        ${u.widths?`<label class="pick">العرض
+          <select data-w="${u.id}">${u.widths.map(w=>`<option value="${w}"${(S.w[u.id]||u.w)==w?" selected":""}>${w} سم</option>`).join("")}</select>
+        </label>`:""}
+        ${u.opts?`<label class="pick">${u.opts.label}
+          <select data-o="${u.id}">${u.opts.list.map(o=>`<option${S.opt[u.id]===o?" selected":""}>${o}</option>`).join("")}</select>
+        </label>`:""}
         ${u.qty?`<div class="qty">
           <button type="button" data-d="-1" aria-label="أقل">−</button>
           <span class="num">${S.ups[u.id]||1}</span>
@@ -688,12 +808,32 @@ function buildUps(){
         </div>`:""}
       </div></div>`;
     el.querySelector(".up-btn").onclick = ()=>{
-      S.ups[u.id] = (S.ups[u.id]||0) > 0 ? 0 : 1; render();
+      if(blocked){ el.dataset.shake = "1"; setTimeout(()=>delete el.dataset.shake, 400); return; }
+      const turningOn = !((S.ups[u.id]||0) > 0);
+      if(u.group === "light"){
+        // الإضاءة اختيار واحد بيتطبّق على التلات تابات مع بعض
+        UPGRADES.forEach(o=>{ if(o.group==="light") S.ups[o.id] = turningOn ? 1 : 0; });
+      } else {
+        if(turningOn && u.group)
+          UPGRADES.forEach(o=>{ if(o.group===u.group && o.id!==u.id) S.ups[o.id]=0; });
+        S.ups[u.id] = turningOn ? 1 : 0;
+      }
+      render();
     };
+    el.querySelectorAll("select[data-w]").forEach(sel=>{
+      sel.onchange = e=>{ e.stopPropagation(); S.w[u.id] = +sel.value; render(); };
+      sel.onclick = e=> e.stopPropagation();
+    });
+    el.querySelectorAll("select[data-o]").forEach(sel=>{
+      sel.onchange = e=>{ e.stopPropagation(); S.opt[u.id] = sel.value; render(); };
+      sel.onclick = e=> e.stopPropagation();
+    });
     el.querySelectorAll(".qty button").forEach(b=>{
       b.onclick = e=>{
         e.stopPropagation();
-        S.ups[u.id] = Math.max(1, Math.min(6, (S.ups[u.id]||1) + (+b.dataset.d)));
+        const d = +b.dataset.d;
+        if(d > 0 && need > 0 && need > free) return;
+        S.ups[u.id] = Math.max(1, Math.min(6, (S.ups[u.id]||1) + d));
         render();
       };
     });
@@ -704,87 +844,169 @@ function buildUps(){
 /* ===== منظر الوحدات — التوقيع ===== */
 /* الوحدات الحقيقية اللي اتختارت هي مصدر الرسمة وعدد الأدراج — مفيش تقدير */
 function buildUnits(){
+  const cap = Math.round(S.lower*100);
+  const mod = cap < 600 ? 60 : 90;          // أقل من ٦ متر ← وحدات ٦٠، من ٦ متر وفوق ← ٩٠
   const u = [];
-  u.push({w:90, t: S.ups.corner ? "corner" : "door"});   // الزاوية
-  u.push({w:90, t: S.ups.sink   ? "sink"   : "door"});   // وحدة الحوض
-  u.push({w:60, t:"drawers", rows:2});                   // وحدة أدراج موجودة في أي مطبخ
+
+  // الوحدات اللي بتحل مكان حاجة قائمة
+  const cornerPick = UPGRADES.find(o=>o.group==="corner" && S.ups[o.id]);
+  const sinkPick   = UPGRADES.find(o=>o.group==="sink"   && S.ups[o.id]);
+  u.push({w:mod, t: cornerPick ? cornerPick.t : "door", name: cornerPick?cornerPick.short:null});
+  u.push({w:mod, t: sinkPick   ? sinkPick.t   : "door", name: sinkPick?sinkPick.short:null});
+  u.push({w:mod, t:"drawers", rows:2});   // الدرجين الموجودين في أي مطبخ
 
   UPGRADES.forEach(up=>{
     const q = S.ups[up.id]||0;
-    if(!q || !up.w || up.t==="inside" || up.id==="corner" || up.id==="sink") return;
-    for(let i=0;i<q;i++) u.push({w:up.w, t:up.t, rows:up.rows||2});
+    if(!q || !up.w || up.t==="inside" || up.group==="corner" || up.group==="sink") return;
+    const w = S.w[up.id] || up.w;
+    for(let i=0;i<q;i++) u.push({w:w, t:up.t, rows:up.rows||2, name:up.short});
   });
 
-  let used = u.reduce((a,b)=>a+b.w, 0);
-  const cap = Math.round(S.lower*100);
-  while(cap - used >= 60){ u.push({w:60, t:"door"}); used += 60; }
-  const drawers = u.filter(x=>x.t==="drawers").reduce((a,b)=>a+b.rows, 0);
-  return {u, used, cap, drawers};
+  const committed = u.reduce((a,b)=>a+b.w, 0);   // الأساسيات + الترقيات بس
+  let used = committed;
+  while(cap - used >= mod){ u.push({w:mod, t:"door"}); used += mod; }
+
+  // الباقي: وحدة صغيرة بأقرب مقاس أصغر (٥٠ / ٤٠ / ٣٠ / ٢٠)
+  let rest = cap - used;
+  while(rest >= 20){
+    const sm = [50,40,30,20].find(v=>rest >= v);
+    if(!sm) break;
+    u.push({w:sm, t:"door", small:true}); used += sm; rest -= sm;
+  }
+
+  const drawers = u.filter(x=>x.t==="drawers"||x.t==="drawersPro").reduce((a,b)=>a+b.rows, 0);
+  return {u, used, cap, mod, drawers, committed, free: Math.max(0, cap - committed)};
 }
 
-function drawElev(built){
-  const svg = document.getElementById("elev");
-  const W=320, H=96, gap=3, units=built.u;
+function drawElev(built, compact){
+  const svg = document.getElementById(compact ? "elevM" : "elev");
+  const W = 320, gap = 3;
+  const upperCm = Math.round(S.lower*100*S.upper);
+  const extraCm = Math.round(upperCm*S.extra);
+  const hasExtra = extraCm > 0, hasUpper = upperCm > 0;
+
+  // ارتفاعات الصفوف: السفلي الأكبر، العلوي أصغر، الدور الإضافي أصغر حاجة
+  let hExtra = 0, hUpper = 0, hLower = 0, y = 0;
+  if(hasExtra){ hExtra = 14; hUpper = 22; hLower = 52; }
+  else if(hasUpper){ hUpper = 26; hLower = 60; }
+  else { hLower = 82; }
+  const rowGap = 6;
+  const H = hExtra + (hExtra?rowGap:0) + hUpper + (hUpper?rowGap:0) + hLower;
+  svg.setAttribute("viewBox", `0 0 ${W} ${H + (compact ? 2 : 16)}`);
+
   const span = Math.max(built.used, built.cap);
-  const scale = (W - gap*(units.length-1)) / span;
-  let x = 0, out = "";
-  units.forEach(un=>{
+  const scale = (W - gap*(built.u.length-1)) / span;
+  let out = "";
+
+  // ---- العلوي والدور الإضافي: شريط واحد طويل بارتفاع صغير ----
+  const lowerPx = built.u.reduce((a,b)=>a+Math.max(3,b.w*scale),0) + gap*(built.u.length-1);
+  function band(cm, top, h, fill, stroke){
+    const w = Math.max(4, lowerPx * (cm/(S.lower*100)));
+    out += `<rect x="0" y="${top}" width="${w.toFixed(1)}" height="${h}" rx="2.5" fill="${fill}" stroke="${stroke}" stroke-width="1.3"/>`;
+  }
+
+  if(hasExtra){ band(extraCm, y, hExtra, "#F2F1E8", "#DAD7CA"); y += hExtra + rowGap; }
+  if(hasUpper){ band(upperCm, y, hUpper, "#FFFFFF", "#DAD7CA"); y += hUpper + rowGap; }
+
+  // ---- الصف السفلي ----
+  const top = y, H0 = hLower;
+  let x = 0;
+  built.u.forEach(un=>{
     const w = Math.max(3, un.w*scale), X = x.toFixed(1);
+    const R = (yy,hh,fill,op) => `<rect x="${X}" y="${(top+yy).toFixed(1)}" width="${w.toFixed(1)}" height="${hh.toFixed(1)}" rx="2.5" fill="${fill}"${op?` opacity="${op}"`:""}/>`;
     if(un.t === "drawers"){
-      const rh = (H - (un.rows-1)*3)/un.rows;
+      const rh = (H0 - (un.rows-1)*3)/un.rows;
       for(let r=0;r<un.rows;r++){
-        const y = r*(rh+3);
-        out += `<rect x="${X}" y="${y.toFixed(1)}" width="${w.toFixed(1)}" height="${rh.toFixed(1)}" rx="2.5" fill="#43522A" opacity="${(0.95 - r*0.11).toFixed(2)}"/>`;
-        out += `<rect x="${(x+w*0.26).toFixed(1)}" y="${(y+rh/2-1.1).toFixed(1)}" width="${(w*0.48).toFixed(1)}" height="2.2" rx="1.1" fill="#FBFAF6" opacity=".85"/>`;
+        out += R(r*(rh+3), rh, "#43522A", (0.95 - r*0.11).toFixed(2));
+        out += `<rect x="${(x+w*0.26).toFixed(1)}" y="${(top+r*(rh+3)+rh/2-1).toFixed(1)}" width="${(w*0.48).toFixed(1)}" height="2" rx="1" fill="#FBFAF6" opacity=".85"/>`;
       }
-    } else if(un.t === "tower"){
-      out += `<rect x="${X}" y="0" width="${w.toFixed(1)}" height="${H}" rx="2.5" fill="#43522A"/>`;
-      for(let k=1;k<5;k++)
-        out += `<rect x="${(x+w*0.18).toFixed(1)}" y="${(k*H/5).toFixed(1)}" width="${(w*0.64).toFixed(1)}" height="1.6" rx="0.8" fill="#FBFAF6" opacity=".5"/>`;
-    } else if(un.t === "bin"){
-      out += `<rect x="${X}" y="0" width="${w.toFixed(1)}" height="${H}" rx="2.5" fill="#fff" stroke="#DAD7CA" stroke-width="1.4"/>`;
-      out += `<rect x="${(x+w*0.12).toFixed(1)}" y="${(H*0.22).toFixed(1)}" width="${(w*0.4).toFixed(1)}" height="${(H*0.56).toFixed(1)}" rx="2" fill="#5F7039"/>`;
-      out += `<rect x="${(x+w*0.56).toFixed(1)}" y="${(H*0.34).toFixed(1)}" width="${(w*0.3).toFixed(1)}" height="${(H*0.44).toFixed(1)}" rx="2" fill="#77874F"/>`;
-      out += `<rect x="${(x+w*0.1).toFixed(1)}" y="${(H*0.14).toFixed(1)}" width="${(w*0.8).toFixed(1)}" height="3" rx="1.5" fill="#B9793C"/>`;
-    } else if(un.t === "niche"){
-      out += `<rect x="${X}" y="0" width="${w.toFixed(1)}" height="${H}" rx="2.5" fill="#EEF0E4" stroke="#43522A" stroke-width="1.6"/>`;
-      for(let k=1;k<4;k++)
-        out += `<rect x="${(x+3).toFixed(1)}" y="${(k*H/4).toFixed(1)}" width="${Math.max(3,w-6).toFixed(1)}" height="2" rx="1" fill="#77874F"/>`;
-    } else if(un.t === "table"){
-      out += `<rect x="${X}" y="0" width="${w.toFixed(1)}" height="${H}" rx="2.5" fill="#fff" stroke="#DAD7CA" stroke-width="1.4"/>`;
-      out += `<rect x="${(x+w*0.08).toFixed(1)}" y="${(H*0.3).toFixed(1)}" width="${(w*0.84).toFixed(1)}" height="5" rx="2.5" fill="#B9793C"/>`;
-      out += `<rect x="${(x+w*0.3).toFixed(1)}" y="${(H*0.42).toFixed(1)}" width="${(w*0.4).toFixed(1)}" height="3" rx="1.5" fill="#DAD7CA"/>`;
+    } else if(un.t === "drawersPro"){
+      const rh = (H0 - 3)/2;
+      for(let r=0;r<2;r++){
+        out += R(r*(rh+3), rh, "#43522A", (0.95 - r*0.11).toFixed(2));
+        out += `<rect x="${(x+w*0.26).toFixed(1)}" y="${(top+r*(rh+3)+rh/2-1).toFixed(1)}" width="${(w*0.48).toFixed(1)}" height="2" rx="1" fill="#FBFAF6" opacity=".85"/>`;
+      }
+      // الدرج السحري الداخلي — خط متقطع جوه الدرج السفلي
+      out += `<rect x="${(x+w*0.16).toFixed(1)}" y="${(top+rh*0.28).toFixed(1)}" width="${(w*0.68).toFixed(1)}" height="${(rh*0.4).toFixed(1)}" rx="2" fill="none" stroke="#B9793C" stroke-width="1.4" stroke-dasharray="3 2"/>`;
     } else if(un.t === "baskets"){
       for(let r=0;r<un.rows;r++){
-        const rh=(H-(un.rows-1)*3)/un.rows, y=r*(rh+3);
-        out += `<rect x="${X}" y="${y.toFixed(1)}" width="${w.toFixed(1)}" height="${rh.toFixed(1)}" rx="2.5" fill="#EEF0E4" stroke="#77874F" stroke-width="1.5"/>`;
+        const rh=(H0-(un.rows-1)*3)/un.rows, yy=top+r*(rh+3);
+        out += `<rect x="${X}" y="${yy.toFixed(1)}" width="${w.toFixed(1)}" height="${rh.toFixed(1)}" rx="2.5" fill="#EEF0E4" stroke="#77874F" stroke-width="1.4"/>`;
         for(let c=1;c<4;c++)
-          out += `<rect x="${(x+w*c/4-0.5).toFixed(1)}" y="${(y+3).toFixed(1)}" width="1" height="${(rh-6).toFixed(1)}" fill="#77874F" opacity=".55"/>`;
+          out += `<rect x="${(x+w*c/4-0.4).toFixed(1)}" y="${(yy+2.5).toFixed(1)}" width="0.9" height="${(rh-5).toFixed(1)}" fill="#77874F" opacity=".55"/>`;
       }
+    } else if(un.t === "binBasic"){
+      out += `<rect x="${X}" y="${top}" width="${w.toFixed(1)}" height="${H0}" rx="2.5" fill="#fff" stroke="#DAD7CA" stroke-width="1.3"/>`;
+      out += `<rect x="${(x+w*0.24).toFixed(1)}" y="${(top+H0*0.08).toFixed(1)}" width="${(w*0.52).toFixed(1)}" height="${(H0*0.18).toFixed(1)}" rx="2" fill="none" stroke="#77874F" stroke-width="1.4"/>`;
+      out += R(H0*0.36, H0*0.46, "#5F7039").replace(`x="${X}"`,`x="${(x+w*0.14).toFixed(1)}"`).replace(`width="${w.toFixed(1)}"`,`width="${(w*0.34).toFixed(1)}"`);
+      out += R(H0*0.46, H0*0.36, "#77874F").replace(`x="${X}"`,`x="${(x+w*0.54).toFixed(1)}"`).replace(`width="${w.toFixed(1)}"`,`width="${(w*0.3).toFixed(1)}"`);
+    } else if(un.t === "binFam"){
+      out += `<rect x="${X}" y="${top}" width="${w.toFixed(1)}" height="${H0}" rx="2.5" fill="#fff" stroke="#DAD7CA" stroke-width="1.3"/>`;
+      out += R(H0*0.22, H0*0.56, "#5F7039").replace(`x="${X}"`,`x="${(x+w*0.12).toFixed(1)}"`).replace(`width="${w.toFixed(1)}"`,`width="${(w*0.4).toFixed(1)}"`);
+      out += R(H0*0.34, H0*0.44, "#77874F").replace(`x="${X}"`,`x="${(x+w*0.56).toFixed(1)}"`).replace(`width="${w.toFixed(1)}"`,`width="${(w*0.3).toFixed(1)}"`);
+    } else if(un.t === "corner"){
+      out += `<rect x="${X}" y="${top}" width="${w.toFixed(1)}" height="${H0}" rx="2.5" fill="#EEF0E4" stroke="#43522A" stroke-width="1.5"/>`;
+      out += `<path d="M${(x+w*0.5).toFixed(1)},${top} L${(x+w*0.5).toFixed(1)},${(top+H0).toFixed(1)}" stroke="#B9793C" stroke-width="2.4"/>`;
+    } else if(un.t === "tower"){
+      // التاور بيطلع لحد الدور العلوي بارتفاعه العادي
+      const tTop = hasUpper ? (hasExtra ? hExtra + rowGap : 0) : top;
+      const tH   = (top + H0) - tTop;
+      out += `<rect x="${X}" y="${tTop.toFixed(1)}" width="${w.toFixed(1)}" height="${tH.toFixed(1)}" rx="2.5" fill="#43522A"/>`;
+      const shelves = Math.max(4, Math.round(tH/13));
+      for(let k=1;k<shelves;k++)
+        out += `<rect x="${(x+w*0.18).toFixed(1)}" y="${(tTop+k*tH/shelves).toFixed(1)}" width="${(w*0.64).toFixed(1)}" height="1.4" rx="0.7" fill="#FBFAF6" opacity=".5"/>`;
     } else if(un.t === "pullout"){
-      out += `<rect x="${X}" y="0" width="${w.toFixed(1)}" height="${H}" rx="2.5" fill="#5F7039"/>`;
+      out += `<rect x="${X}" y="${top}" width="${w.toFixed(1)}" height="${H0}" rx="2.5" fill="#5F7039"/>`;
       for(let k=1;k<4;k++)
-        out += `<rect x="${(x+w*0.16).toFixed(1)}" y="${(k*H/4).toFixed(1)}" width="${(w*0.68).toFixed(1)}" height="1.8" rx="0.9" fill="#FBFAF6" opacity=".6"/>`;
-      out += `<rect x="${(x+w*0.5-1.2).toFixed(1)}" y="${(H*0.34).toFixed(1)}" width="2.4" height="${(H*0.32).toFixed(1)}" rx="1.2" fill="#FBFAF6" opacity=".9"/>`;
+        out += `<rect x="${(x+w*0.16).toFixed(1)}" y="${(top+k*H0/4).toFixed(1)}" width="${(w*0.68).toFixed(1)}" height="1.5" rx="0.7" fill="#FBFAF6" opacity=".6"/>`;
+    } else if(un.t === "coffee"){
+      out += `<rect x="${X}" y="${top}" width="${w.toFixed(1)}" height="${H0}" rx="2.5" fill="#EEF0E4" stroke="#43522A" stroke-width="1.5"/>`;
+      out += R(H0*0.16, H0*0.3, "#43522A").replace(`x="${X}"`,`x="${(x+w*0.28).toFixed(1)}"`).replace(`width="${w.toFixed(1)}"`,`width="${(w*0.44).toFixed(1)}"`);
+      out += `<rect x="${(x+w*0.2).toFixed(1)}" y="${(top+H0*0.62).toFixed(1)}" width="${(w*0.6).toFixed(1)}" height="2" rx="1" fill="#77874F"/>`;
+    } else if(un.t === "niche"){
+      const nTop = hasUpper ? (hasExtra ? hExtra + rowGap : 0) : top;
+      const nH   = (top + H0) - nTop;
+      out += `<rect x="${X}" y="${nTop.toFixed(1)}" width="${w.toFixed(1)}" height="${nH.toFixed(1)}" rx="2.5" fill="none" stroke="#43522A" stroke-width="1.8"/>`;
+      const rows = Math.max(3, Math.round(nH/16));
+      for(let k=1;k<rows;k++)
+        out += `<line x1="${(x+3).toFixed(1)}" y1="${(nTop+k*nH/rows).toFixed(1)}" x2="${(x+w-3).toFixed(1)}" y2="${(nTop+k*nH/rows).toFixed(1)}" stroke="#43522A" stroke-width="1.2"/>`;
+    } else if(un.t === "table"){
+      out += `<rect x="${X}" y="${top}" width="${w.toFixed(1)}" height="${H0}" rx="2.5" fill="#fff" stroke="#DAD7CA" stroke-width="1.3"/>`;
+      out += `<rect x="${(x+2).toFixed(1)}" y="${(top+H0*0.36).toFixed(1)}" width="${(w-4).toFixed(1)}" height="5" rx="2.5" fill="#B9793C"/>`;
+    } else if(un.t === "trayDiv"){
+      out += `<rect x="${X}" y="${top}" width="${w.toFixed(1)}" height="${H0}" rx="2.5" fill="#EEF0E4" stroke="#43522A" stroke-width="1.5"/>`;
+      const n = Math.max(3, Math.round(w/9));
+      for(let k=1;k<n;k++)
+        out += `<line x1="${(x+w*k/n).toFixed(1)}" y1="${(top+4).toFixed(1)}" x2="${(x+w*k/n).toFixed(1)}" y2="${(top+H0-4).toFixed(1)}" stroke="#43522A" stroke-width="1.2"/>`;
     } else if(un.t === "spice"){
-      out += `<rect x="${X}" y="0" width="${w.toFixed(1)}" height="${H}" rx="2" fill="#77874F"/>`;
-      for(let k=1;k<5;k++)
-        out += `<rect x="${(x+1).toFixed(1)}" y="${(k*H/5).toFixed(1)}" width="${Math.max(2,w-2).toFixed(1)}" height="1.4" fill="#FBFAF6" opacity=".55"/>`;
+      out += `<rect x="${X}" y="${top}" width="${w.toFixed(1)}" height="${H0}" rx="2" fill="#77874F"/>`;
     } else {
-      out += `<rect x="${X}" y="0" width="${w.toFixed(1)}" height="${H}" rx="2.5" fill="#fff" stroke="#DAD7CA" stroke-width="1.4"/>`;
-      if(un.t === "corner")
-        out += `<path d="M${(x+w-2).toFixed(1)},2 L${(x+w*0.5).toFixed(1)},2 L${(x+w*0.5).toFixed(1)},${(H-2).toFixed(1)}" fill="none" stroke="#B9793C" stroke-width="1.6"/>`;
-      if(un.t === "sink")
-        out += `<rect x="${(x+w*0.24).toFixed(1)}" y="${(H*0.1).toFixed(1)}" width="${(w*0.52).toFixed(1)}" height="${(H*0.16).toFixed(1)}" rx="2" fill="none" stroke="#B9793C" stroke-width="1.5"/>`;
-      out += `<rect x="${(x+w*0.5-1.1).toFixed(1)}" y="${(H*0.44).toFixed(1)}" width="2.2" height="${(H*0.16).toFixed(1)}" rx="1.1" fill="#C9C5B6"/>`;
+      out += `<rect x="${X}" y="${top}" width="${w.toFixed(1)}" height="${H0}" rx="2.5" fill="${un.small?"#F6F5EF":"#fff"}" stroke="#DAD7CA" stroke-width="1.3"/>`;
+      out += `<rect x="${(x+w*0.5-1).toFixed(1)}" y="${(top+H0*0.44).toFixed(1)}" width="2" height="${(H0*0.16).toFixed(1)}" rx="1" fill="#C9C5B6"/>`;
     }
     x += w + gap;
   });
+
+  // ---- الأسماء والمقاسات تحت الصف السفلي (مش في النسخة المصغّرة) ----
+  let lx = 0;
+  if(!compact)
+  built.u.forEach(un=>{
+    const w = Math.max(3, un.w*scale), cx = lx + w/2;
+    if(w >= 12){
+      if(un.name && w >= 20)
+        out += `<text x="${cx.toFixed(1)}" y="${(top+H0+8).toFixed(1)}" font-size="7" fill="#43522A" text-anchor="middle" font-family="Tahoma,sans-serif">${un.name}</text>`;
+      out += `<text x="${cx.toFixed(1)}" y="${(top+H0+(un.name&&w>=20?15:9)).toFixed(1)}" font-size="7" fill="#6B7263" text-anchor="middle" font-family="monospace">${un.w}</text>`;
+    }
+    lx += w + gap;
+  });
+
   svg.innerHTML = out;
+  if(compact) return;
   const over = built.used > built.cap;
-  document.getElementById("elevNote").textContent =
-    over ? "الترقيات أطول من المطبخ" : units.length.toLocaleString("ar-EG")+" وحدة";
-  document.getElementById("elevNote").style.color = over ? "#8C5A16" : "";
+  const note = document.getElementById("elevNote");
+  note.textContent = over ? "الترقيات أطول من المطبخ"
+    : (hasExtra?"٣ صفوف · ":(hasUpper?"صفين · ":"سفلي بس · ")) + "الموديول "+built.mod+" سم";
+  note.style.color = over ? "#8C5A16" : "";
 }
 
 /* ===== الحساب ===== */
@@ -800,6 +1022,7 @@ function render(){
   UPGRADES.forEach(u=>{
     const q = S.ups[u.id]||0;
     if(!q) return;
+    if(u.group === "light" && u.id !== "light_b") return;   // بند واحد بس في الحساب
     upsTotal += u.price * q;
     util += u.util * (u.qty ? Math.min(q,3) : 1);
   });
@@ -823,15 +1046,16 @@ function render(){
   document.getElementById("lBase").textContent = ar(baseLo)+" – "+ar(baseHi);
   document.getElementById("lUps").textContent = upsTotal ? ar(upsTotal) : "٠";
   document.getElementById("lTotal").textContent = ar(baseLo+upsTotal)+" – "+ar(baseHi+upsTotal);
-  document.getElementById("mTotal").textContent = "من "+ar(baseLo+upsTotal);
-  document.getElementById("mSub").textContent = arN(metres)+" متر · "+drawers.toLocaleString("ar-EG")+" درج";
+  document.getElementById("mTotal").textContent = ar(baseLo+upsTotal);
+  document.getElementById("mMetres").textContent = arN(metres);
+  document.getElementById("mUtil").textContent = util.toLocaleString("ar-EG")+"٪";
 
   document.getElementById("pUpdated").textContent = "آخر تحديث للأسعار: "+PRICES_UPDATED;
-  drawElev(built);
+  drawElev(built); drawElev(built, true);
   buildChips(); buildTabs(); buildUps();
 
   const picked = TIERS.map(t=>{
-    const list = UPGRADES.filter(u=>u.tier===t.id && S.ups[u.id]);
+    const list = UPGRADES.filter(u=>u.tier===t.id && S.ups[u.id] && !(u.group==="light" && u.id!=="light_b"));
     if(!list.length) return "";
     return t.name+":\n"+list.map(u=>"• "+u.name+((S.ups[u.id]>1)?" ×"+S.ups[u.id]:"")).join("\n");
   }).filter(Boolean).join("\n") || "• من غير ترقيات";
